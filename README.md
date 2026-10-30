@@ -47,7 +47,7 @@ Inside of AstroPaper, you'll see the following folders and files:
 /
 ├── public/
 │   ├── pagefind/          # auto-generated on build
-│   ├── favicon.svg
+│   ├── favicon.ico
 │   └── default-og.jpg
 ├── src/
 │   ├── assets/
