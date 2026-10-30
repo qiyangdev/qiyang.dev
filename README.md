@@ -25,7 +25,7 @@ The development server runs at `http://localhost:4321` by default.
 | `pnpm format`       | Format the project.                                                  |
 | `pnpm sync`         | Generate Astro types.                                                |
 
-The build downloads Google Sans Code through Astro's Google Fonts provider, so it requires access to Google Fonts. The generated Pagefind index is copied to `public/pagefind/` and is ignored by Git.
+The build downloads Google Sans Code through Astro's Google Fonts provider and requires access to Google Fonts. The generated Pagefind index is copied to `public/pagefind/` and is ignored by Git.
 
 ## Project structure
 
@@ -33,11 +33,12 @@ The build downloads Google Sans Code through Astro's Google Fonts provider, so i
 - `src/pages/` — site routes, including the homepage.
 - `src/content/pages/about.md` — About page content.
 - `src/content/posts/` — Markdown and MDX posts.
+- `src/content/components/` — MDX component documentation.
 - `src/components/`, `src/layouts/`, and `src/styles/` — shared UI and styling.
 - `public/` — static assets, including the favicon.
 
-Posts use the schema in `src/content.config.ts`. Each post requires a title, description, and publication date; optional fields include tags, draft status, and a featured flag. Posts can be organized in subdirectories, which become part of their URLs.
-
 ## License
 
-This project is based on [AstroPaper](https://github.com/satnaing/astro-paper) by Sat Naing and contributors. See [LICENSE](LICENSE) for the MIT license.
+The source code is licensed under the MIT License. This project is based on [AstroPaper](https://github.com/satnaing/astro-paper) by Sat Naing and contributors; see [LICENSE](LICENSE) for the license and original copyright notice.
+
+Unless otherwise noted, articles and original images are © Qiyang Wang. All rights reserved. They are not covered by the MIT License and may not be republished without permission. Third-party content remains subject to its respective license.

@@ -1,0 +1,168 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+import bezel from "@/assets/images/bezels/iphone-18-pro-max-burgundy.png";
+import mask from "@/assets/images/bezels/iphone-18-pro-max-burgundy-mask.png";
+import bounds from "@/assets/images/bezels/iphone-18-pro-max-burgundy-mask.json";
+
+interface Props {
+  initialScreenshot: ImageMetadata;
+  alt: string;
+  loading?: "eager" | "lazy";
+  hotspots?: Array<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    label: string;
+    to: ImageMetadata;
+    alt: string;
+    from?: ImageMetadata;
+  }>;
+}
+
+const { initialScreenshot, alt, loading = "lazy", hotspots = [] } = Astro.props;
+---
+
+<div
+  class="phone-screenshot"
+  style={`aspect-ratio: ${bezel.width} / ${bezel.height}`}
+>
+  <div
+    class="phone-screenshot__mask"
+    style={`mask-image: url('${mask.src}'); -webkit-mask-image: url('${mask.src}')`}
+  >
+    <Image
+      class="phone-screenshot__screen"
+      src={initialScreenshot}
+      width={500}
+      {loading}
+      {alt}
+      data-lightbox-ignore
+      style={`left:${bounds.left}%;top:${bounds.top}%;width:${bounds.width}%;height:${bounds.height}%`}
+    />
+    {
+      hotspots.map(hotspot => (
+        <button
+          type="button"
+          class="phone-screenshot__hotspot"
+          aria-label={hotspot.label}
+          data-from={(hotspot.from ?? initialScreenshot).src}
+          data-target={hotspot.to.src}
+          data-alt={hotspot.alt}
+          hidden={
+            (hotspot.from ?? initialScreenshot).src !== initialScreenshot.src
+          }
+          style={`left:${bounds.left + (hotspot.x * bounds.width) / 100}%;top:${bounds.top + (hotspot.y * bounds.height) / 100}%;width:${(hotspot.width * bounds.width) / 100}%;height:${(hotspot.height * bounds.height) / 100}%`}
+        />
+      ))
+    }
+  </div>
+  <Image
+    class="phone-screenshot__bezel"
+    src={bezel}
+    width={500}
+    {loading}
+    alt=""
+    aria-hidden="true"
+    data-lightbox-ignore
+  />
+</div>
+
+<style>
+  .phone-screenshot {
+    position: relative;
+    width: min(100%, 15.7rem);
+    margin-inline: auto;
+  }
+  .phone-screenshot__mask {
+    position: absolute;
+    inset: 0;
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+  }
+  .phone-screenshot :global(img) {
+    position: absolute;
+    display: block;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
+  }
+  .phone-screenshot__screen {
+    object-fit: cover;
+  }
+  .phone-screenshot__bezel {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .phone-screenshot__hotspot {
+    position: absolute;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .phone-screenshot__hotspot:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -3px;
+  }
+</style>
+
+<script>
+  const pending = new WeakMap<HTMLImageElement, number>();
+
+  document.addEventListener("click", async event => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const button = target.closest<HTMLButtonElement>(
+      ".phone-screenshot__hotspot"
+    );
+    if (!button) return;
+    const phone = button.closest(".phone-screenshot");
+    const image = phone?.querySelector<HTMLImageElement>(
+      ".phone-screenshot__screen"
+    );
+    if (!phone || !image || !button.dataset.target) return;
+    const nextSrc = button.dataset.target;
+    const request = (pending.get(image) ?? 0) + 1;
+    pending.set(image, request);
+    const nextImage = new Image();
+    nextImage.src = nextSrc;
+    try {
+      await nextImage.decode();
+    } catch {
+      return;
+    }
+    if (pending.get(image) !== request) return;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const previous = image.cloneNode() as HTMLImageElement;
+    if (!reducedMotion) {
+      previous.removeAttribute("role");
+      previous.removeAttribute("tabindex");
+      previous.setAttribute("aria-hidden", "true");
+      previous.setAttribute("data-lightbox-ignore", "");
+      previous.style.pointerEvents = "none";
+      image.before(previous);
+    }
+    image.getAnimations().forEach(animation => animation.cancel());
+    image.src = nextSrc;
+    image.alt = button.dataset.alt ?? "";
+    for (const hotspot of phone.querySelectorAll<HTMLButtonElement>(
+      ".phone-screenshot__hotspot"
+    )) {
+      hotspot.hidden = hotspot.dataset.from !== nextSrc;
+    }
+    if (!reducedMotion) {
+      const animation = image.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 200,
+        easing: "ease-out",
+      });
+      animation.finished.catch(() => {}).finally(() => previous.remove());
+    }
+  });
+</script>

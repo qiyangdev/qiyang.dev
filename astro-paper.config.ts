@@ -3,11 +3,10 @@ import { defineAstroPaperConfig } from "./src/types/config";
 export default defineAstroPaperConfig({
   site: {
     url: "https://qiyang.dev/",
-    title: "Qiyang",
+    title: "Qiyang.Dev",
     description: "Qiyang Wang is a software engineer based in Beijing, China.",
     author: "Qiyang Wang",
     profile: "https://qiyang.dev/",
-    ogImage: "qiyang-og.jpg",
     lang: "en",
     timezone: "Asia/Shanghai",
     dir: "ltr",

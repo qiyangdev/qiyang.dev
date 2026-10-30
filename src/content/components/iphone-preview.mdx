@@ -1,0 +1,72 @@
+---
+title: "iPhone Preview"
+description: "Show app screenshots inside an interactive iPhone frame."
+---
+
+import IPhonePreview from "../../components/IPhonePreview.astro";
+import ComponentPreview from "../../components/ComponentPreview.astro";
+import ResponsiveTable from "../../components/ResponsiveTable.astro";
+import home from "../../assets/images/minimal-expo-starter/ios-home-tab.png";
+import settings from "../../assets/images/minimal-expo-starter/ios-settings-tab.png";
+
+This component displays an app screenshot inside an iPhone frame. You can add clickable areas to switch between screens. Try the Home and Settings tabs below.
+
+<ComponentPreview>
+  <IPhonePreview
+    initialScreenshot={home}
+    alt="Home screen on iOS"
+    loading="eager"
+    hotspots={[
+      { x: 50, y: 90, width: 50, height: 10, label: "Open Settings", to: settings, alt: "Settings screen on iOS" },
+      { x: 0, y: 90, width: 50, height: 10, label: "Open Home", from: settings, to: home, alt: "Home screen on iOS" },
+    ]}
+  />
+</ComponentPreview>
+
+## Usage
+
+```mdx
+<IPhonePreview initialScreenshot={home} alt="Home screen" />
+```
+
+## Props
+
+<ResponsiveTable label="iPhone Preview props">
+
+| Prop | Type | Required | Description |
+| --- | --- | --- | --- |
+| `initialScreenshot` | `ImageMetadata` | Yes | The first screenshot to display. |
+| `alt` | `string` | Yes | Alternative text for the first screenshot. |
+| `loading` | `"eager" \| "lazy"` | No | Image loading strategy. Defaults to `"lazy"`; use `"eager"` for a preview visible on initial load. |
+| `hotspots` | `Hotspot[]` | No | Clickable areas that switch between screenshots. Defaults to an empty array. |
+
+</ResponsiveTable>
+
+### Hotspot
+
+Positions and sizes are percentages of the screen bounds. For example, `x: 50` starts halfway across the screen.
+
+<ResponsiveTable label="Hotspot fields">
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x` | `number` | Yes | Distance from the left edge of the screen. |
+| `y` | `number` | Yes | Distance from the top edge of the screen. |
+| `width` | `number` | Yes | Width of the clickable area. |
+| `height` | `number` | Yes | Height of the clickable area. |
+| `label` | `string` | Yes | Accessible name for the button. |
+| `to` | `ImageMetadata` | Yes | Screenshot to display after clicking. |
+| `alt` | `string` | Yes | Alternative text for the target screenshot. |
+| `from` | `ImageMetadata` | No | Screenshot on which the area is active. Defaults to `initialScreenshot`. |
+
+</ResponsiveTable>
+
+## Replacing the frame
+
+The iPhone frame is built into the component. To replace it, generate a screen mask and bounds from a transparent bezel image:
+
+```sh
+node scripts/bezel-mask.mjs path/to/bezel.png path/to/bezel-mask.png
+```
+
+The script creates a mask and a JSON file with the screen bounds. The image must have a closed transparent screen area containing its center. Update the component imports to use the new bezel, mask, and bounds.
