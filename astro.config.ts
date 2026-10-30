@@ -62,11 +62,64 @@ export default defineConfig({
     {
       name: "Google Sans Code",
       cssVariable: "--font-google-sans-code",
-      provider: fontProviders.google(),
+      provider: fontProviders.local(),
+      options: {
+        variants: [
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-300.ttf"],
+            weight: 300,
+            style: "normal",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-Italic-300.ttf"],
+            weight: 300,
+            style: "italic",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-400.ttf"],
+            weight: 400,
+            style: "normal",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-Italic-400.ttf"],
+            weight: 400,
+            style: "italic",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-500.ttf"],
+            weight: 500,
+            style: "normal",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-Italic-500.ttf"],
+            weight: 500,
+            style: "italic",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-600.ttf"],
+            weight: 600,
+            style: "normal",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-Italic-600.ttf"],
+            weight: 600,
+            style: "italic",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-700.ttf"],
+            weight: 700,
+            style: "normal",
+          },
+          {
+            src: ["./src/assets/fonts/GoogleSansCode-Italic-700.ttf"],
+            weight: 700,
+            style: "italic",
+          },
+        ],
+      },
       fallbacks: ["monospace"],
       weights: [300, 400, 500, 600, 700],
       styles: ["normal", "italic"],
-      formats: ["woff", "ttf"],
     },
   ],
   env: {
