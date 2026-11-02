@@ -39,6 +39,8 @@ const components = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    pubDatetime: z.date(),
+    modDatetime: z.date().optional().nullable(),
     draft: z.boolean().default(false),
   }),
 });
