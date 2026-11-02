@@ -41,22 +41,20 @@ const { initialScreenshot, alt, loading = "lazy", hotspots = [] } = Astro.props;
       data-lightbox-ignore
       style={`left:${bounds.left}%;top:${bounds.top}%;width:${bounds.width}%;height:${bounds.height}%`}
     />
-    {
-      hotspots.map(hotspot => (
-        <button
-          type="button"
-          class="phone-screenshot__hotspot"
-          aria-label={hotspot.label}
-          data-from={(hotspot.from ?? initialScreenshot).src}
-          data-target={hotspot.to.src}
-          data-alt={hotspot.alt}
-          hidden={
-            (hotspot.from ?? initialScreenshot).src !== initialScreenshot.src
-          }
-          style={`left:${bounds.left + (hotspot.x * bounds.width) / 100}%;top:${bounds.top + (hotspot.y * bounds.height) / 100}%;width:${(hotspot.width * bounds.width) / 100}%;height:${(hotspot.height * bounds.height) / 100}%`}
-        />
-      ))
-    }
+    {hotspots.map(hotspot => (
+      <button
+        type="button"
+        class="phone-screenshot__hotspot"
+        aria-label={hotspot.label}
+        data-from={(hotspot.from ?? initialScreenshot).src}
+        data-target={hotspot.to.src}
+        data-alt={hotspot.alt}
+        hidden={
+          (hotspot.from ?? initialScreenshot).src !== initialScreenshot.src
+        }
+        style={`left:${bounds.left + (hotspot.x * bounds.width) / 100}%;top:${bounds.top + (hotspot.y * bounds.height) / 100}%;width:${(hotspot.width * bounds.width) / 100}%;height:${(hotspot.height * bounds.height) / 100}%`}
+      />
+    ))}
   </div>
   <Image
     class="phone-screenshot__bezel"

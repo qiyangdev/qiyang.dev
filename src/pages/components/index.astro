@@ -25,19 +25,17 @@ const locale = Astro.currentLocale ?? config.site.lang;
     pageDesc="A collection of components and examples."
   >
     <ul>
-      {
-        components.map(component => (
-          <li class="my-6">
-            <a
-              class="text-accent text-lg font-medium underline-offset-4 hover:underline"
-              href={getRelativeLocaleUrl(locale, `components/${component.id}`)}
-            >
-              {component.data.title}
-            </a>
-            <p>{component.data.description}</p>
-          </li>
-        ))
-      }
+      {components.map(component => (
+        <li class="my-6">
+          <a
+            class="text-accent text-lg font-medium underline-offset-4 hover:underline"
+            href={getRelativeLocaleUrl(locale, `components/${component.id}`)}
+          >
+            {component.data.title}
+          </a>
+          <p>{component.data.description}</p>
+        </li>
+      ))}
     </ul>
   </Main>
   <Footer />
