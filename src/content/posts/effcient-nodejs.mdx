@@ -1,0 +1,35 @@
+---
+title: "Efficient Node.js"
+pubDatetime: 2026-10-31T10:00:00+08:00
+description: "A guide to streams, child processes, and scaling in Node.js."
+tags:
+  - Node.js
+  - Performance
+  - Notes
+---
+
+## Streams
+
+[Streams](https://nodejs.org/api/stream.html) help Node.js process large amounts of data without loading everything into memory at once. They handle data in smaller chunks over time.
+
+There are four main types of streams. [Readable streams](https://nodejs.org/api/stream.html#class-streamreadable) produce data, while [writable streams](https://nodejs.org/api/stream.html#class-streamwritable) receive it. [Duplex streams](https://nodejs.org/api/stream.html#class-streamduplex) can both read and write. [Transform streams](https://nodejs.org/api/stream.html#class-streamtransform) are duplex streams that also change the data as it passes through them.
+
+Working with streams means handling different states and events. For example, a readable stream can be flowing or paused, and a writable stream may process data more slowly than a readable stream produces it. The [`pipeline`](https://nodejs.org/api/stream.html#streampipelinesource-transforms-destination-callback) method makes streams easier to use by handling many of these details, including errors.
+
+## Child processes
+
+Child processes let a Node.js application run other programs, scripts, or shell commands. They can also communicate with the parent process when needed.
+
+The [`node:child_process`](https://nodejs.org/api/child_process.html) module provides asynchronous functions such as [`spawn`](https://nodejs.org/api/child_process.html#child_processspawncommand-args-options), [`exec`](https://nodejs.org/api/child_process.html#child_processexeccommand-options-callback), and [`execFile`](https://nodejs.org/api/child_process.html#child_processexecfilefile-args-options-callback). It also provides [synchronous versions](https://nodejs.org/api/child_process.html#synchronous-process-creation) that wait for the child process to finish. The `spawn` function streams output, so it is useful for commands that produce a large amount of data. The `exec` function runs a command in a shell; `spawn` can also use a shell when configured to do so.
+
+The [`fork`](https://nodejs.org/api/child_process.html#child_processforkmodulepath-args-options) function starts a Node.js script in a separate process. This lets the main process continue with other work while the child process runs.
+
+## Scaling
+
+There are several ways to scale a Node.js application, including cloning, decomposing, and splitting. One approach is to run multiple copies of a server and share work between them.
+
+The built-in [`node:cluster`](https://nodejs.org/api/cluster.html) module lets a primary process create and manage worker processes. Workers can share a port, and the primary process can distribute incoming connections among them. This can help a server use multiple CPU cores.
+
+By default on most platforms, `node:cluster` distributes connections among workers in turn. Other routing approaches or external services can help with caching and connections that need to keep state.
+
+The primary process can monitor workers, replace those that fail, and restart them one at a time. This can help keep the server available when a worker stops or needs to restart.

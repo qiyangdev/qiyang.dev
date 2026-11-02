@@ -1,0 +1,54 @@
+---
+title: "Minimal Expo Starter"
+pubDatetime: 2026-10-30T10:00:00+08:00
+description: "A minimal Expo starter for native iOS and Android apps."
+tags:
+  - Expo
+  - React Native
+  - Open Source
+---
+
+import IPhonePreview from "../../components/IPhonePreview.astro";
+import homeScreenshot from "../../assets/images/minimal-expo-starter/ios-home-tab.png";
+import settingsScreenshot from "../../assets/images/minimal-expo-starter/ios-settings-tab.png";
+
+[Minimal Expo Starter](https://github.com/qiyangdev/minimal-expo-starter) is an open-source template I created for building iOS and Android apps with Expo.
+
+It comes with Expo Router, native tabs, and separate navigation stacks for Home and Settings. It also uses `@expo/ui` components based on SwiftUI and Jetpack Compose. TypeScript, typed routes, React Compiler, and ESLint are ready to use.
+
+<IPhonePreview
+  initialScreenshot={homeScreenshot}
+  alt="Home screen on iOS"
+  hotspots={[
+    {
+      x: 50,
+      y: 90,
+      width: 50,
+      height: 10,
+      label: "Open Settings",
+      from: homeScreenshot,
+      to: settingsScreenshot,
+      alt: "Settings screen on iOS"
+    },
+    {
+      x: 0,
+      y: 90,
+      width: 50,
+      height: 10,
+      label: "Open Home",
+      from: settingsScreenshot,
+      to: homeScreenshot,
+      alt: "Home screen on iOS"
+    },
+  ]}
+/>
+
+The template gives you a simple place to start. Replace the example screens and app details, then add the features you need.
+
+The `main` branch stays simple. Other branches add features you can try:
+
+- [`notifications`](https://github.com/qiyangdev/minimal-expo-starter/tree/notifications) adds iOS push notifications and a test script.
+- [`with-ai`](https://github.com/qiyangdev/minimal-expo-starter/tree/with-ai) shows how to generate text on a device.
+- [`iphone-duo-demo`](https://github.com/qiyangdev/minimal-expo-starter/tree/iphone-duo-demo) shows a split layout using ArrangementView on supported iOS versions.
+
+To get started, clone the [repository](https://github.com/qiyangdev/minimal-expo-starter), install dependencies with `bun install`, and run `bun start`.
