@@ -1,0 +1,24 @@
+---
+title: "Slider with Popover"
+pubDatetime: 2026-11-03T10:06:44+08:00
+description: "A SwiftUI slider with a value popover, inspired by a design in Apple Books."
+tags:
+  - SwiftUI
+---
+
+import IPhonePreview from "../../components/IPhonePreview.astro";
+import sliderScreenshot from "../../assets/images/slider-with-popover/iphone-duo-slider-with-popover.png";
+
+In SwiftUI, a `Slider` does not display its current value as text by default. One option is to use `LabeledContent`. Another is to place a `Text` view next to the slider in an `HStack`. Both are simple ways to make the value clear.
+
+While using Apple Books, I noticed another approach: showing the current value in a popover above the slider's thumb. I liked this design and wanted to try something similar in SwiftUI.
+
+The popover keeps the value close to the part of the slider you move. This makes it easy to connect the thumb's position with the value it represents.
+
+Here is the result on iPhone Duo, with the slider set to `0.50`.
+
+<IPhonePreview
+  model="iPhoneDuo"
+  initialScreenshot={sliderScreenshot}
+  alt="A slider set to 0.50 with its value displayed in a popover on iPhone Duo"
+/>

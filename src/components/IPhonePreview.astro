@@ -1,11 +1,13 @@
 ---
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
-import bezel from "@/assets/images/bezels/iphone-18-pro-max-burgundy.png";
-import mask from "@/assets/images/bezels/iphone-18-pro-max-burgundy-mask.png";
-import bounds from "@/assets/images/bezels/iphone-18-pro-max-burgundy-mask.json";
+import {
+  iphonePreviewModels,
+  type IPhoneModel,
+} from "@/utils/iphonePreviewModels";
 
 interface Props {
+  model?: IPhoneModel;
   initialScreenshot: ImageMetadata;
   alt: string;
   loading?: "eager" | "lazy";
@@ -21,12 +23,21 @@ interface Props {
   }>;
 }
 
-const { initialScreenshot, alt, loading = "lazy", hotspots = [] } = Astro.props;
+const {
+  model = "iPhone18ProMax",
+  initialScreenshot,
+  alt,
+  loading = "lazy",
+  hotspots = [],
+} = Astro.props;
+const { bezel, mask, bounds, maxWidth, imageWidth } =
+  iphonePreviewModels[model];
 ---
 
 <div
   class="phone-screenshot"
-  style={`aspect-ratio: ${bezel.width} / ${bezel.height}`}
+  data-model={model}
+  style={`aspect-ratio: ${bezel.width} / ${bezel.height}; --phone-max-width: ${maxWidth}`}
 >
   <div
     class="phone-screenshot__mask"
@@ -35,7 +46,7 @@ const { initialScreenshot, alt, loading = "lazy", hotspots = [] } = Astro.props;
     <Image
       class="phone-screenshot__screen"
       src={initialScreenshot}
-      width={500}
+      width={imageWidth}
       {loading}
       {alt}
       data-lightbox-ignore
@@ -59,7 +70,7 @@ const { initialScreenshot, alt, loading = "lazy", hotspots = [] } = Astro.props;
   <Image
     class="phone-screenshot__bezel"
     src={bezel}
-    width={500}
+    width={imageWidth}
     {loading}
     alt=""
     aria-hidden="true"
@@ -70,7 +81,7 @@ const { initialScreenshot, alt, loading = "lazy", hotspots = [] } = Astro.props;
 <style>
   .phone-screenshot {
     position: relative;
-    width: min(100%, 15.7rem);
+    width: min(100%, var(--phone-max-width));
     margin-inline: auto;
   }
   .phone-screenshot__mask {

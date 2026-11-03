@@ -28,7 +28,15 @@ This component displays an app screenshot inside an iPhone frame. You can add cl
 
 ```mdx
 <IPhonePreview initialScreenshot={home} alt="Home screen" />
+
+<IPhonePreview
+  model="iPhoneDuo"
+  initialScreenshot={duoScreenshot}
+  alt="App on iPhone Duo"
+/>
 ```
+
+Supported models are `iPhone18ProMax` (the default, Burgundy) and `iPhoneDuo` (Night Sky, inner screen open in portrait). Each model uses its own frame, screen mask, screen bounds, and display width. Use a screenshot matching the selected screen's aspect ratio to avoid cropping; screenshots fill the screen with `object-fit: cover`.
 
 ## Props
 
@@ -36,6 +44,7 @@ This component displays an app screenshot inside an iPhone frame. You can add cl
 
 | Prop | Type | Required | Description |
 | --- | --- | --- | --- |
+| `model` | `"iPhone18ProMax" \| "iPhoneDuo"` | No | Device frame to display. Defaults to `"iPhone18ProMax"`. |
 | `initialScreenshot` | `ImageMetadata` | Yes | The first screenshot to display. |
 | `alt` | `string` | Yes | Alternative text for the first screenshot. |
 | `loading` | `"eager" \| "lazy"` | No | Image loading strategy. Defaults to `"lazy"`; use `"eager"` for a preview visible on initial load. |
@@ -62,12 +71,12 @@ Positions and sizes are percentages of the screen bounds. For example, `x: 50` s
 
 </ResponsiveTable>
 
-## Replacing the frame
+## Adding a model
 
-The iPhone frame is built into the component. To replace it, generate a screen mask and bounds from a transparent bezel image:
+Generate a screen mask and bounds from a transparent bezel image:
 
 ```sh
 node scripts/bezel-mask.mjs path/to/bezel.png path/to/bezel-mask.png
 ```
 
-The script creates a mask and a JSON file with the screen bounds. The image must have a closed transparent screen area containing its center. Update the component imports to use the new bezel, mask, and bounds.
+The script creates a mask and a JSON file with the screen bounds. The image must have a closed transparent screen area containing its center. Add the bezel, mask, and bounds to `src/utils/iphonePreviewModels.ts`, along with a `maxWidth` (CSS display width) and `imageWidth` (generated image width in pixels). The `model` prop automatically accepts the new configuration key. Hotspot coordinates remain relative to the selected model's screen bounds.
