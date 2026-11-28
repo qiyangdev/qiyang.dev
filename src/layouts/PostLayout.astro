@@ -31,6 +31,12 @@ const structuredData = {
     },
   ],
 };
+
+// Escape "<" so article data cannot close the JSON-LD script element.
+const structuredDataJson = JSON.stringify(structuredData).replace(
+  /</g,
+  "\\u003c"
+);
 ---
 
 <Layout {title} {description} {ogImage} {canonicalURL}>
@@ -54,7 +60,7 @@ const structuredData = {
     <script
       type="application/ld+json"
       is:inline
-      set:html={JSON.stringify(structuredData)}
+      set:html={structuredDataJson}
     />
   </Fragment>
 
